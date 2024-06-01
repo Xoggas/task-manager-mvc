@@ -1,7 +1,7 @@
 function getAllTasks(req, res) {
-  res.send('Tasks');
+  res.render('tasksView.hbs');
 }
 
 export default {
   getAllTasks
-}
+};

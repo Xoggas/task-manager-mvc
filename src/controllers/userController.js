@@ -9,8 +9,6 @@ function checkAutorization(req, res, next) {
     return;
   }
 
-  console.log(req.path);
-
   if (req.path === '/users/login' || req.path === '/users/register') {
     next();
   }

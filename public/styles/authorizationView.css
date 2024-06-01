@@ -19,45 +19,10 @@
   border: 1px solid var(--border-color-1);
 }
 
-input,
-button {
-  text-align: center;
-  padding: 0.5em;
-  border: 1px solid var(--border-color-1);
-  width: 100%;
-  transition: background-color 150ms;
-}
-
-input:focus {
-  background-color: var(--fill-color-1);
-}
-
-input::placeholder {
-  color: var(--border-color-2);
-}
-
-button {
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: var(--fill-color-1);
-}
-
-button:active {
-  background-color: var(--fill-color-2);
-}
-
 .error-message {
   padding: 1em;
   border: 1px solid var(--border-color-1);
   color: var(--border-color-1);
-}
-
-.button-bar {
-  display: flex;
-  gap: 1em;
-  width: 100%;
 }
 
 a {

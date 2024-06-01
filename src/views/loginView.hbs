@@ -17,11 +17,11 @@
 
 <body>
   <div class="form-container">
-    <form id="form" method="POST" action="/users/login" class="form">
+    <form id="form" method="POST" action="{{actionLink}}" class="form">
       <input name="username" id="username" autocomplete="username" type="text" placeholder="Username">
       <input name="password" id="password" autocomplete="current-password" type="password" placeholder="Password">
       <button type="submit">Login</button>
-      <a href="/register">Or make a new account</a>
+      <a href="{{redirectLink}}">Or make a new account</a>
     </form>
     {{#if error}}
     <p class="error-message">
@@ -29,7 +29,7 @@
     </p>
     {{/if}}
   </div>
-  <script src="public/scripts/authorizationView.js"></script>
+  <script src="/public/scripts/authorizationView.js"></script>
 </body>
 
 </html>

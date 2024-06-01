@@ -1,0 +1,28 @@
+* {
+  font-family: Roboto, Helvetica, Arial;
+}
+
+:root {
+  --main-color-1: #212529;
+  --main-color-2: #343a40;
+  --text-color-1: #dee2e6;
+  --text-color-2: #ced4da;
+  --border-color-1: #f8f9fa66;
+  --border-color-2: #e9ecef33;
+  --fill-color-1: #e9ecef10;
+  --fill-color-2: #8a8a8a10;
+}
+
+html {
+  font-size: 1em;
+}
+
+@media screen and (orientation: portrait) {
+  html {
+    font-size: 0.75em;
+  }
+}
+
+body {
+  background: var(--main-color-1);
+}

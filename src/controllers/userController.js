@@ -9,11 +9,13 @@ function checkAutorization(req, res, next) {
     return;
   }
 
-  if (req.path === '/login' || req.path === '/register') {
+  console.log(req.path);
+
+  if (req.path === '/users/login' || req.path === '/users/register') {
     next();
   }
   else {
-    res.redirect('/login');
+    res.redirect('/users/login');
   }
 }
 
@@ -22,7 +24,7 @@ function authorizeUser(req, res) {
 
   try {
     userModel.authorizeUser(username, password);
-    return res.redirect('/tasks');
+    return res.redirect('/tasks/all');
   }
   catch (e) {
     return res.render('loginView.hbs', {
@@ -36,7 +38,7 @@ function registerUser(req, res) {
 
   try {
     userModel.registerUser(username, password);
-    return res.redirect('/tasks');
+    return res.redirect('/tasks/all');
   }
   catch (e) {
     return res.render('registerView.hbs', {

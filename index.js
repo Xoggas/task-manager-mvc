@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use('/public', express.static(path.join(dirname, 'public')));
-app.use('/', authMiddleware);
+app.use(authMiddleware);
 
 app.use('/users', authRouter);
 app.use('/tasks', taskRouter);

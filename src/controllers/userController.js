@@ -1,27 +1,28 @@
 import userModel from '../models/userModel.js';
 
-function checkAutorization(req, res, next) {
-  const { username } = req.cookies;
-  const isAuthorized = userModel.isUserAuthorized(username);
-
-  if (isAuthorized) {
+async function checkAutorization(req, res, next) {
+  if (req.path === '/users/login' || req.path === '/users/register') {
     next();
     return;
   }
 
-  if (req.path === '/users/login' || req.path === '/users/register') {
+  const { username } = req.cookies;
+  const isAuthorized = await userModel.isUserAuthorized(username);
+
+  if (isAuthorized) {
     next();
+    return;
   }
   else {
     res.redirect('/users/login');
   }
 }
 
-function authorizeUser(req, res) {
+async function authorizeUser(req, res) {
   const { username, password } = req.body;
 
   try {
-    userModel.authorizeUser(username, password);
+    await userModel.authorizeUser(username, password);
     return res.redirect('/tasks/all');
   }
   catch (e) {
@@ -31,11 +32,11 @@ function authorizeUser(req, res) {
   }
 }
 
-function registerUser(req, res) {
+async function registerUser(req, res) {
   const { username, password } = req.body;
 
   try {
-    userModel.registerUser(username, password);
+    await userModel.registerUser(username, password);
     return res.redirect('/tasks/all');
   }
   catch (e) {
@@ -49,4 +50,4 @@ export default {
   checkAutorization,
   authorizeUser,
   registerUser
-}
+};

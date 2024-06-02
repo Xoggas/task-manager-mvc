@@ -9,7 +9,7 @@ router.use('/users', authRouter);
 router.use('/tasks', taskRouter);
 
 router.use((req, res) => {
-  res.render('default.hbs');
+  res.render('defaultView.hbs');
 });
 
 export default router;

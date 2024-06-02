@@ -1,38 +1,36 @@
-const users = [];
+import db from '../db/db.js';
+import cryptography from '../cryptography/cryptography.js';
 
-function isUserAuthorized(username) {
-  return users.find(user => user.username === username)?.isAuthorized;
+async function isUserAuthorized(username) {
+  const res = await db.query('SELECT is_authorized FROM users WHERE username = $1', [username]);
+  const isAuthorized = res.rows[0].is_authorized || false;
+  return isAuthorized;
 }
 
-function authorizeUser(username, password) {
-  const user = users.find(user => user.username === username);
+async function authorizeUser(username, password) {
+  const res = await db.query('SELECT password FROM users WHERE username = $1', [username]);
+  const hash = res.rows[0].password;
+  const isAuthDataValid = await cryptography.compare(password, hash);
 
-  if (user === undefined) {
-    throw new Error(`User with username ${username} doesn't exist!`);
-  }
-
-  if (user.isAuthorized) {
-    return;
-  }
-
-  if (user.password === password) {
-    user.isAuthorized = true;
+  if (isAuthDataValid) {
+    await db.query('UPDATE users SET is_authorized = true WHERE username = $1', [username]);
   }
   else {
-    throw new Error('Incorrect password!');
+    throw new Error('The username or password was incorrect');
   }
 }
 
-function registerUser(username, password) {
-  if (users.some(user => user.username === username)) {
-    throw new Error(`User with username ${username} already exists!`);
-  }
+async function registerUser(username, password) {
+  const res = await db.query('SELECT EXISTS(SELECT 1 FROM users WHERE username = $1)', [username]);
+  const isUserRegistered = res.rows[0].exists;
 
-  users.push({
-    username: username,
-    password: password,
-    isAuthorized: true
-  });
+  if (isUserRegistered) {
+    throw new Error('The user with this name already exists!');
+  }
+  else {
+    const hash = await cryptography.makeHash(password);
+    await db.query('INSERT INTO users(username, password, is_authorized) VALUES ($1, $2, true)', [username, hash]);
+  }
 }
 
 export default {

@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "node --watch index.js"
+    "dev": "node --watch index.js",
+    "test": "node --test"
   },
   "repository": {
     "type": "git",
@@ -31,5 +32,11 @@
     "hbs": "^4.2.0",
     "pg": "^8.11.5"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "jest": {
+    "transform": {}
+  }
 }

@@ -2,9 +2,8 @@ import db from '../db/db.js';
 import cryptography from '../cryptography/cryptography.js';
 
 async function isUserAuthorized(username) {
-  const res = await db.query('SELECT is_authorized FROM users WHERE username = $1', [username]);
-  const isAuthorized = res.rows[0].is_authorized || false;
-  return isAuthorized;
+  const res = await db.query('SELECT EXISTS(SELECT 1 FROM users WHERE username = $1 AND is_authorized = true)', [username]);
+  return res.rows[0].exists;
 }
 
 async function authorizeUser(username, password) {
@@ -20,6 +19,10 @@ async function authorizeUser(username, password) {
   }
 }
 
+async function unauthorizeUser(username) {
+  await db.query('UPDATE users SET is_authorized = false WHERE username = $1', [username]);
+}
+
 async function registerUser(username, password) {
   const res = await db.query('SELECT EXISTS(SELECT 1 FROM users WHERE username = $1)', [username]);
   const isUserRegistered = res.rows[0].exists;
@@ -33,8 +36,14 @@ async function registerUser(username, password) {
   }
 }
 
+async function removeUser(username) {
+  await db.query('DELETE FROM users WHERE username = $1', [username]);
+}
+
 export default {
   isUserAuthorized,
   authorizeUser,
-  registerUser
+  registerUser,
+  removeUser,
+  unauthorizeUser
 };

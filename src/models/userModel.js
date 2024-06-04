@@ -24,6 +24,14 @@ async function unauthorizeUser(username) {
 }
 
 async function registerUser(username, password) {
+  if (!username) {
+    throw new Error('The username shouldn\'t be empty!');
+  }
+
+  if (!password || password.length < 8) {
+    throw new Error('Minimum password length is 8 symbols!');
+  }
+
   const res = await db.query('SELECT EXISTS(SELECT 1 FROM users WHERE username = $1)', [username]);
   const isUserRegistered = res.rows[0].exists;
 
